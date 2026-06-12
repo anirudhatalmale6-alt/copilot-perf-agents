@@ -1,0 +1,168 @@
+{
+  "name": "copilot-perf-agents",
+  "displayName": "Copilot PERF Agents",
+  "description": "Performance Review, Test Scripting, and Estimation agents for GitHub Copilot Chat",
+  "version": "1.0.0",
+  "publisher": "perf-engineering",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Chat"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "extensionDependencies": [
+    "github.copilot-chat"
+  ],
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "perf-agents.review",
+        "fullName": "Performance Review Agent",
+        "name": "perf-review",
+        "description": "Scan code for performance issues — bottlenecks, memory leaks, O(n^2) patterns, N+1 queries",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "scan",
+            "description": "Scan the current file for performance issues"
+          },
+          {
+            "name": "diff",
+            "description": "Review uncommitted git changes for performance regressions"
+          },
+          {
+            "name": "workspace",
+            "description": "Scan all source files in the workspace"
+          }
+        ]
+      },
+      {
+        "id": "perf-agents.scripting",
+        "fullName": "Test Scripting Agent",
+        "name": "scripting",
+        "description": "Generate performance test scripts — Playwright, k6, Selenium, LoadRunner",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "playwright",
+            "description": "Generate Playwright test scripts from current project"
+          },
+          {
+            "name": "k6",
+            "description": "Generate k6 load test scripts"
+          },
+          {
+            "name": "selenium",
+            "description": "Generate Selenium WebDriver test scripts"
+          },
+          {
+            "name": "loadrunner",
+            "description": "Generate LoadRunner C scripts"
+          },
+          {
+            "name": "testcases",
+            "description": "Generate test cases CSV from code analysis"
+          },
+          {
+            "name": "all",
+            "description": "Generate all test types (Playwright, k6, Selenium, LoadRunner)"
+          }
+        ]
+      },
+      {
+        "id": "perf-agents.estimation",
+        "fullName": "PERF Estimation Agent",
+        "name": "estimation",
+        "description": "Calculate PERF effort estimates from HLD documents — 11 activities, efficiency, cost",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "analyze",
+            "description": "Analyze an HLD document in the workspace"
+          },
+          {
+            "name": "ticket",
+            "description": "Fetch HLD from a Jira PET ticket and estimate"
+          },
+          {
+            "name": "rules",
+            "description": "Show current PERF estimation rules and defaults"
+          },
+          {
+            "name": "calibrate",
+            "description": "Adjust estimation parameters interactively"
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "PERF Agents",
+      "properties": {
+        "perfAgents.jira.url": {
+          "type": "string",
+          "default": "",
+          "description": "Jira on-premise server URL (e.g. https://jira.company.com)"
+        },
+        "perfAgents.jira.email": {
+          "type": "string",
+          "default": "",
+          "description": "Jira username or email for authentication"
+        },
+        "perfAgents.jira.apiToken": {
+          "type": "string",
+          "default": "",
+          "description": "Jira API token or password"
+        },
+        "perfAgents.jira.projectKey": {
+          "type": "string",
+          "default": "",
+          "description": "Default Jira project key for PET tickets"
+        },
+        "perfAgents.estimation.costPerPersonDay": {
+          "type": "number",
+          "default": 250,
+          "description": "Cost per person-day in USD"
+        },
+        "perfAgents.estimation.efficiencyPercentage": {
+          "type": "number",
+          "default": 19,
+          "description": "Efficiency percentage applied to vendor estimate"
+        },
+        "perfAgents.estimation.hoursPerDay": {
+          "type": "number",
+          "default": 8,
+          "description": "Working hours per day"
+        },
+        "perfAgents.scripting.outputDir": {
+          "type": "string",
+          "default": "perf-scripts",
+          "description": "Output directory for generated test scripts (relative to workspace root)"
+        },
+        "perfAgents.review.severity": {
+          "type": "string",
+          "enum": ["all", "high", "critical"],
+          "default": "all",
+          "description": "Minimum severity level to report"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.93.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "mammoth": "^1.8.0"
+  }
+}
