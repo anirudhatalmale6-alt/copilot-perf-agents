@@ -1,0 +1,21 @@
+test_id,type,test_name,page_or_endpoint,method,input_data,expected_result,priority,description
+TC-001,positive,User Registration - Valid Data,/api/users,POST,"{""name"":""John Doe"",""email"":""john@test.com"",""password"":""SecureP@ss123""}",201 Created with user ID,high,Register a new user with valid details
+TC-002,positive,User Login - Valid Credentials,/api/auth/login,POST,"{""email"":""john@test.com"",""password"":""SecureP@ss123""}",200 OK with JWT token,high,Login with valid credentials
+TC-003,positive,Browse Products - List All,/api/products,GET,,200 OK with product array,high,Retrieve all available products
+TC-004,positive,View Product Details,/api/products/1,GET,,200 OK with product object including name price description,medium,View a specific product by ID
+TC-005,positive,Add Product to Cart,/api/cart,POST,"{""product_id"":1,""quantity"":2}",201 Created with cart item,high,Add a product to the shopping cart
+TC-006,positive,View Cart Summary,/api/cart,GET,,200 OK with cart items and total price,high,Retrieve current cart contents
+TC-007,positive,Place Order - Valid Cart,/api/orders,POST,"{""payment_method"":""credit_card"",""shipping_address"":""123 Test St""}",201 Created with order ID,high,Complete checkout with valid cart
+TC-008,positive,View Order History,/api/orders,GET,,200 OK with orders array,medium,List all orders for logged-in user
+TC-009,positive,Search Products by Name,/api/products?search=laptop,GET,,200 OK with filtered products,medium,Search products using keyword
+TC-010,positive,Update Cart Quantity,/api/cart/1,PUT,"{""quantity"":5}",200 OK with updated cart item,medium,Change quantity of item in cart
+TC-011,negative,User Registration - Duplicate Email,/api/users,POST,"{""name"":""Jane"",""email"":""john@test.com"",""password"":""Pass123!""}",409 Conflict - email already exists,high,Register with an already registered email
+TC-012,negative,User Login - Wrong Password,/api/auth/login,POST,"{""email"":""john@test.com"",""password"":""wrongpass""}",401 Unauthorized,high,Login with incorrect password
+TC-013,negative,User Login - Non-existent User,/api/auth/login,POST,"{""email"":""nobody@test.com"",""password"":""Pass123!""}",401 Unauthorized,medium,Login with email that does not exist
+TC-014,negative,View Product - Invalid ID,/api/products/99999,GET,,404 Not Found,medium,Request product with non-existent ID
+TC-015,negative,Add to Cart - Zero Quantity,/api/cart,POST,"{""product_id"":1,""quantity"":0}",400 Bad Request - quantity must be positive,medium,Add product with zero quantity
+TC-016,negative,Add to Cart - Negative Quantity,/api/cart,POST,"{""product_id"":1,""quantity"":-1}",400 Bad Request - invalid quantity,medium,Add product with negative quantity
+TC-017,negative,Place Order - Empty Cart,/api/orders,POST,"{""payment_method"":""credit_card""}",400 Bad Request - cart is empty,high,Try to checkout with empty cart
+TC-018,negative,Access Cart - No Auth Token,/api/cart,GET,,401 Unauthorized,high,Access cart without authentication header
+TC-019,negative,Add to Cart - Out of Stock Product,/api/cart,POST,"{""product_id"":50,""quantity"":100}",400 Bad Request - insufficient stock,medium,Add more items than available stock
+TC-020,negative,User Registration - Missing Fields,/api/users,POST,"{""name"":""Jane""}",400 Bad Request - missing required fields,high,Register without email and password
