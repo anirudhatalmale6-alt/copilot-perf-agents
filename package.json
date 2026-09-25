@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "copilot-perf-agents",
   "displayName": "Copilot PERF Agents",
   "description": "Performance Review, Test Scripting, and Estimation agents for GitHub Copilot Chat",
   "version": "1.0.0",
@@ -142,11 +142,7 @@
         },
         "perfAgents.review.severity": {
           "type": "string",
-          "enum": [
-            "all",
-            "high",
-            "critical"
-          ],
+          "enum": ["all", "high", "critical"],
           "default": "all",
           "description": "Minimum severity level to report"
         }
@@ -154,8 +150,11 @@
     }
   },
   "scripts": {
-    "build": "node canary.js && tsc",
-    "prepare": "node canary.js"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "npx @vscode/vsce package"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
